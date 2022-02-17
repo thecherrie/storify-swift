@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 struct ContentView: View {
     @State var currentView: Int = 0
     @State var isShowPhotoPicker = false
@@ -18,16 +19,16 @@ struct ContentView: View {
             ZStack{
                 switch currentView {
                 case 1:
-                    CreateNewStoryView(isShowPhotoPicker: $isShowPhotoPicker)
+                    CreateNewStoryView()
                 case 2:
                     VStack{
                         ProfileView()
-                        AsyncImage(url: URL(string: "https://example.com/icon.png")) { image in
-                            .resizable()
-                            .scaledToFill()
-                            .frame(minWidth:0, maxWidth: .infinity)
-                            .ignoresSafeArea()
-                        }
+//                        AsyncImage(url: URL(string: "https://example.com/icon.png")) { image in
+//                            .resizable()
+//                            .scaledToFill()
+//                            .frame(minWidth:0, maxWidth: .infinity)
+//                            .ignoresSafeArea()
+//                        }
                     }
                     
                 default:

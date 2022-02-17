@@ -6,9 +6,34 @@
 //
 
 import SwiftUI
+import AVKit
+
+struct VideoPlayer: UIViewControllerRepresentable {
+    
+    var player : AVPlayer
+    
+    func makeUIViewController(context: UIViewControllerRepresentableContext<VideoPlayer>) -> AVPlayerViewController {
+        let controller = AVPlayerViewController()
+        controller.player = player
+        controller.showsPlaybackControls = false
+        return controller
+    }
+    
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: UIViewControllerRepresentableContext<VideoPlayer>) {
+        
+    }
+    
+}
 
 struct FeedView: View {
+    
+    var videos = [
+        "https://bit.ly/swswift",
+        "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4",
+    ]
+    
     @State var index = 0
+    
     
     var body: some View {
             GeometryReader{proxy in
@@ -16,9 +41,16 @@ struct FeedView: View {
                 let size = proxy.size
                 
                     TabView(selection: $index) {
-                        ForEach(1...10, id: \.self) { i in
+                        ForEach(0..<videos.count, id: \.self) { i in
                             ZStack{
-                                Color.gray
+                                let player = AVPlayer(url: URL(string: videos[i])!)
+                                VideoPlayer(player: player)
+                                    .onDisappear() {
+                                        player.pause()
+                                    }
+                                    .onAppear() {
+                                        player.play()
+                                    }
                                 LinearGradient(gradient: Gradient(colors: [.black, .black.opacity(0.0)]), startPoint: .bottom, endPoint: .center)
                                 VStack{
                                     Spacer()
@@ -26,7 +58,7 @@ struct FeedView: View {
                                         VStack(alignment:.leading){
                                             UserMiniProfileView()
                                                 .foregroundColor(.white)
-                                            VideoDescriptionView(description: "A test decription")
+                                            VideoDescriptionView(description: videos[i])
                                                 .foregroundColor(.white)
                                         }
                                         .padding()
